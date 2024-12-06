@@ -116,22 +116,26 @@ public class BuildingController {
     }
 
     //Updatowanie poziomu - to be continued
-//    @PostMapping("{id}/floor/{fid}")
-//    public Floor updateFloor(@PathVariable String id, String fid, @RequestBody Floor updatedFloor){
-//        logger.info("Request to update floor {} of building {}", fid, id);
-//
-//        //Find the building:
-//        for(int i=0; i<buildingStorage.size(); i++){
-//            Building building = buildingStorage.get(i);
-//            for(int j=0; j<building.getFloors().size(); j++){
-//                Floor floor = building.getFloors().get(j);
-//                if(floor.getId().equals(fid)){
-//                    //Change the floor to the updatedFloor
-//
-//                }
-//            }
-//        }
-//    }
+    @PutMapping("{bid}/floor/{fid}")
+    public Floor updateFloor(@PathVariable String bid, @PathVariable String fid, @RequestBody Floor updatedFloor){
+        logger.info("Request to update floor {} of building {}", fid, bid);
+
+        //Find the building:
+        for(int i=0; i<buildingStorage.size(); i++){
+            Building building = buildingStorage.get(i);
+            for(int j=0; j<building.getFloors().size(); j++){
+                Floor floor = building.getFloors().get(j);
+                if(floor.getId().equals(fid)){
+                    //Change the floor to the updatedFloor
+                    building.removeFloor(floor);
+                    building.addFloor(updatedFloor);
+                    logger.info("Floor {} updated in building {}", fid, bid);
+                    return updatedFloor;
+                }
+            }
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building or Floor not found");
+    }
 
 
 
