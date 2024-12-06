@@ -24,6 +24,8 @@ public class BuildingController {
     //Storage for buildings: (z tego co pamiętam to mówił, że nie trzeba bazy danych, więc to powinno wystarczyć xD)
     private final List<Building> buildingStorage = new ArrayList<>();
 
+
+    //POST requesty - do wprowadzania danych nowego budnyku/poziomu/pokoju
     @PostMapping(consumes = "application/json", produces="application/json")
     public Building addBuilding(@RequestBody Building building){
         logger.info("Received request to add building: {}", building);
@@ -34,6 +36,26 @@ public class BuildingController {
         return building; //json format - automatically
     }
 
+
+    @PostMapping("/{id}/addFloor")
+    public Floor addFloor(@PathVariable String id, @RequestBody Floor floor){
+        logger.info("Received request to add floor to building {}.", id);
+
+        //Find the right building we're modyfing:
+        for (Building building: buildingStorage){
+            if (building.getId().equals(id)){
+                building.addFloor(floor);
+                logger.info("Successfully added floor to building with id: {}", id);
+                return floor;
+            }
+        }
+        //Exception if building was not found:
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found");
+
+    }
+
+
+    //GET requesty - do pobrania danych danego budynku/poziomu/pokoju
     @GetMapping("/{id}")
     public Building getBuilding(@PathVariable String id) {
         logger.info("Trying to access building with id: {}", id);
