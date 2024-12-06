@@ -24,6 +24,8 @@ public class BuildingController {
     //Storage for buildings: (z tego co pamiętam to mówił, że nie trzeba bazy danych, więc to powinno wystarczyć xD)
     private final List<Building> buildingStorage = new ArrayList<>();
 
+
+    //POST requesty - do wprowadzania danych nowego budnyku/poziomu/pokoju
     @PostMapping(consumes = "application/json", produces="application/json")
     public Building addBuilding(@RequestBody Building building){
         logger.info("Received request to add building: {}", building);
@@ -34,6 +36,48 @@ public class BuildingController {
         return building; //json format - automatically
     }
 
+
+    @PostMapping("/{id}/addFloor")
+    public Floor addFloor(@PathVariable String id, @RequestBody Floor floor){
+        logger.info("Received request to add floor to building {}.", id);
+
+        //Find the right building we're modyfing:
+        for (Building building: buildingStorage){
+            if (building.getId().equals(id)){
+                building.addFloor(floor);
+                logger.info("Successfully added floor to building with id: {}", id);
+                return floor;
+            }
+        }
+        //Exception if building was not found:
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found");
+
+    }
+
+    @PostMapping("{bid}/{fid}/addRoom")
+    public Room addRoom(@PathVariable String bid, @PathVariable String fid, @RequestBody Room room){
+        logger.info("Received request to add building to building {} floor {}.", bid, fid);
+        //Find the right building we're modyfing:
+        for (Building building: buildingStorage){
+            if (building.getId().equals(bid)){
+                //Find the floor we're modyfing:
+                for(Floor floor: building.getFloors()){
+                    if (floor.getId().equals(fid)){
+                        floor.addRoom(room);
+                        logger.info("Room added to floor {} building {}", fid, bid);
+                    }
+                }
+                return room;
+            }
+        }
+        //Exception if building was not found:
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found");
+
+
+    }
+
+
+    //GET requesty - do pobrania danych danego budynku/poziomu/pokoju
     @GetMapping("/{id}")
     public Building getBuilding(@PathVariable String id) {
         logger.info("Trying to access building with id: {}", id);
@@ -72,22 +116,26 @@ public class BuildingController {
     }
 
     //Updatowanie poziomu - to be continued
-//    @PostMapping("{id}/floor/{fid}")
-//    public Floor updateFloor(@PathVariable String id, String fid, @RequestBody Floor updatedFloor){
-//        logger.info("Request to update floor {} of building {}", fid, id);
-//
-//        //Find the building:
-//        for(int i=0; i<buildingStorage.size(); i++){
-//            Building building = buildingStorage.get(i);
-//            for(int j=0; j<building.getFloors().size(); j++){
-//                Floor floor = building.getFloors().get(j);
-//                if(floor.getId().equals(fid)){
-//                    //Change the floor to the updatedFloor
-//
-//                }
-//            }
-//        }
-//    }
+    @PutMapping("{bid}/floor/{fid}")
+    public Floor updateFloor(@PathVariable String bid, @PathVariable String fid, @RequestBody Floor updatedFloor){
+        logger.info("Request to update floor {} of building {}", fid, bid);
+
+        //Find the building:
+        for(int i=0; i<buildingStorage.size(); i++){
+            Building building = buildingStorage.get(i);
+            for(int j=0; j<building.getFloors().size(); j++){
+                Floor floor = building.getFloors().get(j);
+                if(floor.getId().equals(fid)){
+                    //Change the floor to the updatedFloor
+                    building.removeFloor(floor);
+                    building.addFloor(updatedFloor);
+                    logger.info("Floor {} updated in building {}", fid, bid);
+                    return updatedFloor;
+                }
+            }
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building or Floor not found");
+    }
 
 
 

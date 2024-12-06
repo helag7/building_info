@@ -18,6 +18,7 @@ public class Building extends Localization {
     public void addFloor(Floor floor) {
         floors.add(floor);
     }
+    public void removeFloor(Floor floor){ floors.remove(floor); } //żeby można było zmodyfikować piętro z poziomu PUT requesta
 
     @Override
     public float getArea() {
