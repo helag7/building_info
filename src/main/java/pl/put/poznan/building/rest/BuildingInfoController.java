@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.put.poznan.building.logic.BuildingInfo;
 
 import java.util.Arrays;
-
+ //ten plik wsm nie potrzebny chyba, jakoś tak wyszło że w BuildingController jest wszystko xD
 
 @RestController
 @RequestMapping("/{text}")
