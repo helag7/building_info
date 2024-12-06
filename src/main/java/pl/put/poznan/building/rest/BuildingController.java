@@ -54,6 +54,28 @@ public class BuildingController {
 
     }
 
+    @PostMapping("{bid}/{fid}/addRoom")
+    public Room addRoom(@PathVariable String bid, @PathVariable String fid, @RequestBody Room room){
+        logger.info("Received request to add building to building {} floor {}.", bid, fid);
+        //Find the right building we're modyfing:
+        for (Building building: buildingStorage){
+            if (building.getId().equals(bid)){
+                //Find the floor we're modyfing:
+                for(Floor floor: building.getFloors()){
+                    if (floor.getId().equals(fid)){
+                        floor.addRoom(room);
+                        logger.info("Room added to floor {} building {}", fid, bid);
+                    }
+                }
+                return room;
+            }
+        }
+        //Exception if building was not found:
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found");
+
+
+    }
+
 
     //GET requesty - do pobrania danych danego budynku/poziomu/pokoju
     @GetMapping("/{id}")
