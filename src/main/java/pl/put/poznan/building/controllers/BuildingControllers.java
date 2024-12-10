@@ -47,6 +47,30 @@ public class BuildingControllers {
         Building building = createBuilding(id);
         return building.calLight();
     }
+    @GetMapping("/building/{id}/floor/{floorId}/light-per-area")
+    public float getFloorLightPerArea(@PathVariable String id, @PathVariable String floorId) {
+        Floor floor = getFloor(id, floorId);
+        return (floor != null) ? floor.calLight() : 0.0f;
+    }
+
+    @GetMapping("/building/{id}/floor/{floorId}/heating-per-cube")
+    public float getFloorHeatingPerCube(@PathVariable String id, @PathVariable String floorId) {
+        Floor floor = getFloor(id, floorId);
+        return (floor != null) ? floor.calHeating() : 0.0f;
+    }
+
+    @GetMapping("/building/{id}/floor/{floorId}/room/{roomId}/light-per-area")
+    public float getRoomLightPerArea(@PathVariable String id, @PathVariable String floorId, @PathVariable String roomId) {
+        Room room = getRoom(id, floorId, roomId);
+        return (room != null) ? room.calLight() : 0.0f;
+    }
+
+    @GetMapping("/building/{id}/floor/{floorId}/room/{roomId}/heating-per-cube")
+    public float getRoomHeatingPerCube(@PathVariable String id, @PathVariable String floorId, @PathVariable String roomId) {
+        Room room = getRoom(id, floorId, roomId);
+        return (room != null) ? room.calHeating() : 0.0f;
+    }
+
 
     @GetMapping("/building/{id}/heating-per-cube")
     public float getBuildingHeatingPerCube(@PathVariable String id) {
