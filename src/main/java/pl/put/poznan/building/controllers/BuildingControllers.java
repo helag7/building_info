@@ -42,6 +42,18 @@ public class BuildingControllers {
         return building.getLight();
     }
 
+    @GetMapping("/building/{id}/light-per-area")
+    public float getBuildingLightPerArea(@PathVariable String id) {
+        Building building = createBuilding(id);
+        return building.calLight();
+    }
+
+    @GetMapping("/building/{id}/heating-per-cube")
+    public float getBuildingHeatingPerCube(@PathVariable String id) {
+        Building building = createBuilding(id);
+        return building.calHeating();
+    }
+
     @GetMapping("/building/{id}/floors")
     public List<Floor> getBuildingFloors(@PathVariable String id) {
         Building building = createBuilding(id);
