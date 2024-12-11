@@ -3,6 +3,7 @@ package pl.put.poznan.building.rest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import pl.put.poznan.building.logic.BuildingInfo;
 import pl.put.poznan.building.models.Building;
 import pl.put.poznan.building.models.Floor; //maybe not needed here?
 import pl.put.poznan.building.models.Room; //maybe not needed here?
@@ -23,6 +24,9 @@ public class BuildingController {
     //Storage for buildings: (z tego co pamiętam to mówił, że nie trzeba bazy danych, więc to powinno wystarczyć xD)
     private final List<Building> buildingStorage = new ArrayList<>();
     //Debug purpose only
+
+    //class BuildingInfo has methods to simplify searching for correct buildings
+    private final BuildingInfo buildingInfo = new BuildingInfo();
 
     //POST requesty - do wprowadzania danych nowego budnyku/poziomu/pokoju
     @PostMapping("/addBuilding")
@@ -83,107 +87,55 @@ public class BuildingController {
     public Building getBuilding(@PathVariable String id) {
         logger.info("Trying to access building with id: {}", id);
         //Find the correct building by id:
-        for (Building building: buildingStorage){
-            if (building.getId().equals(id)){
-                logger.info("Successfully accessed building with id: {}", id);
-                return building;
-            }
-        }
-        //Exception if building was not found:
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found");
+        Building building = buildingInfo.findBuilding(buildingStorage, id);
+        logger.info("Building found: {}", building);
+        return building;
     }
 
     @GetMapping("/{id}/area")
     public float getBuildingArea(@PathVariable String id) {
-        //Find the correct building by id:
-        for (Building building: buildingStorage){
-            if (building.getId().equals(id)){
-                //Return the computed area of the building
-                return building.getArea();
-            }
-        }
-        //Exception if building was not found:
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found");
+        Building building = buildingInfo.findBuilding(buildingStorage, id);
+        return building.getArea();
     }
 
     @GetMapping("/{id}/cube")
     public float getBuildingCube(@PathVariable String id) {
-        //Find the correct building by id:
-        for (Building building: buildingStorage){
-            if (building.getId().equals(id)){
-                //Return the computed area of the building
-                return building.getCube();
-            }
-        }
-        //Exception if building was not found:
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found");
+        Building building = buildingInfo.findBuilding(buildingStorage, id);
+        return building.getCube();
     }
 
     @GetMapping("/{id}/heating")
     public float getBuildingHeating(@PathVariable String id) {
-        //Find the correct building by id:
-        for (Building building: buildingStorage){
-            if (building.getId().equals(id)){
-                //Return the computed area of the building
-                return building.getHeating();
-            }
-        }
-        //Exception if building was not found:
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found");
+        Building building = buildingInfo.findBuilding(buildingStorage, id);
+        return building.getHeating();
     }
 
     @GetMapping("/{id}/light")
     public float getBuildingLight(@PathVariable String id) {
-        //Find the correct building by id:
-        for (Building building: buildingStorage){
-            if (building.getId().equals(id)){
-                //Return the computed area of the building
-                return building.getLight();
-            }
-        }
-        //Exception if building was not found:
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found");
+        Building building = buildingInfo.findBuilding(buildingStorage, id);
+        return building.getLight();
     }
 
     @GetMapping("/{id}/light-per-area")
     public float getBuildingLightPerArea(@PathVariable String id) {
-        //Find the correct building by id:
-        for (Building building: buildingStorage){
-            if (building.getId().equals(id)){
-                //Return the computed area of the building
-                return building.calLight();
-            }
-        }
-        //Exception if building was not found:
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found");
+        Building building = buildingInfo.findBuilding(buildingStorage, id);
+        return building.calLight();
     }
     @GetMapping("/{id}/heating-per-cube")
     public float getBuildingHeatingPerCube(@PathVariable String id) {
-        //Find the correct building by id:
-        for (Building building: buildingStorage){
-            if (building.getId().equals(id)){
-                //Return the computed area of the building
-                return building.calHeating();
-            }
-        }
-        //Exception if building was not found:
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found");
+        Building building = buildingInfo.findBuilding(buildingStorage, id);
+        return building.calHeating();
     }
 
-    //GET requesty dla konkretnego piętra:
     @GetMapping("/{id}/floors")
     public List<Floor> getBuildingFloors(@PathVariable String id) {
         //Find the correct building by id:
-        for (Building building: buildingStorage){
-            if (building.getId().equals(id)){
-                //Return the computed area of the building
-                return building.getFloors();
-            }
-        }
-        //Exception if building was not found:
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found");
+        Building building = buildingInfo.findBuilding(buildingStorage, id);
+        return building.getFloors();
     }
 
+    //GET requesty dla konkretnego piętra:
+    //TODO: zmienic tak zeby uzywaly metod z klasy buildingInfo
     @GetMapping("/{id}/floor/{floorId}")
     public Floor getFloor(@PathVariable String id, @PathVariable String floorId) {
         //Find the correct building by id:
