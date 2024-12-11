@@ -77,6 +77,8 @@ public class BuildingController {
 
 
     //GET requesty - do pobrania danych danego budynku/poziomu/pokoju
+
+    //GET requesty dla danych całego budynku
     @GetMapping("/{id}")
     public Building getBuilding(@PathVariable String id) {
         logger.info("Trying to access building with id: {}", id);
@@ -142,83 +144,182 @@ public class BuildingController {
         //Exception if building was not found:
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found");
     }
-//TODO
-//    @GetMapping("/{id}/light-per-area")
-//    public float getBuildingLightPerArea(@PathVariable String id) {
-//        //Find the correct building by id:
-//        for (Building building: buildingStorage){
-//            if (building.getId().equals(id)){
-//                //Return the computed area of the building
-//                return building.getLight();
-//            }
-//        }
-//        //Exception if building was not found:
-//        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found");
-//    }
 
-//    @GetMapping("/{id}/floor/{floorId}/light-per-area")
-//    public float getFloorLightPerArea(@PathVariable String id, @PathVariable String floorId) {
-//        Floor floor = getFloor(id, floorId);
-//        return (floor != null) ? floor.calLight() : 0.0f;
-//    }
+    @GetMapping("/{id}/light-per-area")
+    public float getBuildingLightPerArea(@PathVariable String id) {
+        //Find the correct building by id:
+        for (Building building: buildingStorage){
+            if (building.getId().equals(id)){
+                //Return the computed area of the building
+                return building.calLight();
+            }
+        }
+        //Exception if building was not found:
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found");
+    }
+    @GetMapping("/{id}/heating-per-cube")
+    public float getBuildingHeatingPerCube(@PathVariable String id) {
+        //Find the correct building by id:
+        for (Building building: buildingStorage){
+            if (building.getId().equals(id)){
+                //Return the computed area of the building
+                return building.calHeating();
+            }
+        }
+        //Exception if building was not found:
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found");
+    }
 
-//    @GetMapping("/{id}/floor/{floorId}/heating-per-cube")
-//    public float getFloorHeatingPerCube(@PathVariable String id, @PathVariable String floorId) {
-//        Floor floor = getFloor(id, floorId);
-//        return (floor != null) ? floor.calHeating() : 0.0f;
-//    }
+    //GET requesty dla konkretnego piętra:
+    @GetMapping("/{id}/floors")
+    public List<Floor> getBuildingFloors(@PathVariable String id) {
+        //Find the correct building by id:
+        for (Building building: buildingStorage){
+            if (building.getId().equals(id)){
+                //Return the computed area of the building
+                return building.getFloors();
+            }
+        }
+        //Exception if building was not found:
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found");
+    }
+
+    @GetMapping("/{id}/floor/{floorId}")
+    public Floor getFloor(@PathVariable String id, @PathVariable String floorId) {
+        //Find the correct building by id:
+        for (Building building: buildingStorage){
+            if (building.getId().equals(id)){
+                //Find the correct floor:
+                for(Floor floor: building.getFloors()){
+                    if(floor.getId().equals(floorId)){
+                        return floor;
+                    }
+                }
+            }
+        }
+        //Exception if building was not found:
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building or floor not found");
+    }
+
+    @GetMapping("/{id}/floor/{floorId}/light-per-area")
+    public float getFloorLightPerArea(@PathVariable String id, @PathVariable String floorId) {
+        //Find the correct building by id:
+        for (Building building: buildingStorage){
+            if (building.getId().equals(id)){
+                //Find the correct floor:
+                for(Floor floor: building.getFloors()){
+                    if(floor.getId().equals(floorId)){
+                        return floor.calLight();
+                    }
+                }
+            }
+        }
+        //Exception if building was not found:
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building or floor not found");
+    }
+
+    @GetMapping("/{id}/floor/{floorId}/heating-per-cube")
+    public float getFloorHeatingPerCube(@PathVariable String id, @PathVariable String floorId) {
+        //Find the correct building by id:
+        for (Building building: buildingStorage){
+            if (building.getId().equals(id)){
+                //Find the correct floor:
+                for(Floor floor: building.getFloors()){
+                    if(floor.getId().equals(floorId)){
+                        return floor.calHeating();
+                    }
+                }
+            }
+        }
+        //Exception if building was not found:
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building or floor not found");
+    }
+
+    //GET requests for room with specified id:
+
+    @GetMapping("/{id}/floor/{floorId}/room/{roomId}/light-per-area")
+    public float getRoomLightPerArea(@PathVariable String id, @PathVariable String floorId, @PathVariable String roomId) {
+        //Find the correct building by id:
+        for (Building building: buildingStorage){
+            if (building.getId().equals(id)){
+                //Find the correct floor:
+                for(Floor floor: building.getFloors()){
+                    if(floor.getId().equals(floorId)){
+                        for(Room room: floor.getRooms()){
+                            if(room.getId().equals(roomId)){
+                                return room.calLight();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        //Exception if building was not found:
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building, floor or room not found");
+    }
+
+    @GetMapping("/{id}/floor/{floorId}/room/{roomId}/heating-per-cube")
+    public float getRoomHeatingPerCube(@PathVariable String id, @PathVariable String floorId, @PathVariable String roomId) {
+        //Find the correct building by id:
+        for (Building building: buildingStorage){
+            if (building.getId().equals(id)){
+                //Find the correct floor:
+                for(Floor floor: building.getFloors()){
+                    if(floor.getId().equals(floorId)){
+                        for(Room room: floor.getRooms()){
+                            if(room.getId().equals(roomId)){
+                                return room.calHeating();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        //Exception if building was not found:
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building, floor or room not found");
+    }
 //
-//    @GetMapping("/{id}/floor/{floorId}/room/{roomId}/light-per-area")
-//    public float getRoomLightPerArea(@PathVariable String id, @PathVariable String floorId, @PathVariable String roomId) {
-//        Room room = getRoom(id, floorId, roomId);
-//        return (room != null) ? room.calLight() : 0.0f;
-//    }
-//
-//    @GetMapping("/{id}/floor/{floorId}/room/{roomId}/heating-per-cube")
-//    public float getRoomHeatingPerCube(@PathVariable String id, @PathVariable String floorId, @PathVariable String roomId) {
-//        Room room = getRoom(id, floorId, roomId);
-//        return (room != null) ? room.calHeating() : 0.0f;
-//    }
 //
 //
-//    @GetMapping("/{id}/heating-per-cube")
-//    public float getBuildingHeatingPerCube(@PathVariable String id) {
-//        Building building = createBuilding(id);
-//        return building.calHeating();
-//    }
 //
-//    @GetMapping("/{id}/floors")
-//    public List<Floor> getBuildingFloors(@PathVariable String id) {
-//        Building building = createBuilding(id);
-//        return building.getFloors();
-//    }
 //
-//    @GetMapping("/{id}/floor/{floorId}")
-//    public Floor getFloor(@PathVariable String id, @PathVariable String floorId) {
-//        Building building = createBuilding(id);
-//        return building.getFloors().stream()
-//                .filter(floor -> floor.getId().equals(floorId))
-//                .findFirst()
-//                .orElse(null);
-//    }
-//
-//    @GetMapping("/{id}/floor/{floorId}/rooms")
-//    public List<Room> getFloorRooms(@PathVariable String id, @PathVariable String floorId) {
-//        Floor floor = getFloor(id, floorId);
-//        return (floor != null) ? floor.getRooms() : new ArrayList<>();
-//    }
-//
-//    @GetMapping("/{id}/floor/{floorId}/room/{roomId}")
-//    public Room getRoom(@PathVariable String id, @PathVariable String floorId, @PathVariable String roomId) {
-//        Floor floor = getFloor(id, floorId);
-//        if (floor != null) {
-//            return floor.getRooms().stream()
-//                    .filter(room -> room.getId().equals(roomId))
-//                    .findFirst()
-//                    .orElse(null);
-//        }
-//        return null;
-//    }
+    @GetMapping("/{id}/floor/{floorId}/rooms")
+    public List<Room> getFloorRooms(@PathVariable String id, @PathVariable String floorId) {
+        //Find the correct building by id:
+        for (Building building: buildingStorage){
+            if (building.getId().equals(id)){
+                //Find the correct floor:
+                for(Floor floor: building.getFloors()){
+                    if(floor.getId().equals(floorId)){
+                        return floor.getRooms();
+                    }
+                }
+            }
+        }
+        //Exception if building was not found:
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building or floor not found.");
+    }
+
+    @GetMapping("/{id}/floor/{floorId}/room/{roomId}")
+    public Room getRoom(@PathVariable String id, @PathVariable String floorId, @PathVariable String roomId) {
+        //Find the correct building by id:
+        for (Building building: buildingStorage){
+            if (building.getId().equals(id)){
+                //Find the correct floor:
+                for(Floor floor: building.getFloors()){
+                    if(floor.getId().equals(floorId)){
+                        for(Room room: floor.getRooms()){
+                            if(room.getId().equals(roomId)){
+                                return room;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        //Exception if building was not found:
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building, floor or room not found");
+    }
 
     //PUT requesty - dodają możliwość update'owania danych budynku/poziomu/pokoju
     @PutMapping("{id}")
