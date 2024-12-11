@@ -115,7 +115,7 @@ public class BuildingController {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found.");
     }
 
-    //Updatowanie poziomu - to be continued
+    //Updatowanie poziomu - done
     @PutMapping("{bid}/floor/{fid}")
     public Floor updateFloor(@PathVariable String bid, @PathVariable String fid, @RequestBody Floor updatedFloor){
         logger.info("Request to update floor {} of building {}", fid, bid);
@@ -136,6 +136,8 @@ public class BuildingController {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building or Floor not found");
     }
+
+    //Updatowanie pokoju - to be continued
 
 
 
