@@ -35,9 +35,11 @@ public class BuildingInfo {
         //Exception if floor was not found:
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Floor not found");
     }
-    public Room findRoom(Floor floor, String id){
+    public Room findRoom(String bid, String fid, String rid){
+        Building building = findBuilding(bid);
+        Floor floor = findFloor(building, fid);
         for(Room room: floor.getRooms()){
-            if(room.getId().equals(id)){
+            if(room.getId().equals(rid)){
                 return room;
             }
         }
@@ -47,5 +49,33 @@ public class BuildingInfo {
 
     public void addBuilding(Building building){
         buildingStorage.add(building);
+    }
+
+    public Building updateBuilding(Building updatedBuilding, String id){
+        for(int i=0; i<buildingStorage.size(); i++){
+            Building building = buildingStorage.get(i);
+            if(building.getId().equals(id)){
+                buildingStorage.set(i, updatedBuilding);
+                return updatedBuilding;
+            }
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found.");
+    }
+
+    public Floor updateFloor(String bid, Floor updatedFloor, String fid){
+        Building building = findBuilding(bid);
+        Floor floor = findFloor(building, fid);
+        building.removeFloor(floor);
+        building.addFloor(updatedFloor);
+        return updatedFloor;
+    }
+
+    public Room updateRoom(String bid, String fid, Room updatedRoom, String rid){
+        Building building = findBuilding(bid);
+        Floor floor = findFloor(building, fid);
+        Room room = findRoom(bid, fid, rid);
+        floor.removeRoom(room);
+        floor.addRoom(updatedRoom);
+        return updatedRoom;
     }
 }

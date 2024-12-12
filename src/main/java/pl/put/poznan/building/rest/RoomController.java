@@ -47,34 +47,34 @@ public class RoomController {
     public Room getRoom(@PathVariable String id, @PathVariable String floorId, @PathVariable String roomId) {
         Building building = buildingInfo.findBuilding(id);
         Floor floor = buildingInfo.findFloor(building, floorId);
-        return buildingInfo.findRoom(floor, roomId);
+        return buildingInfo.findRoom(id, floorId, roomId);
     }
     @GetMapping("/{id}/floor/{floorId}/room/{roomId}/area")
     public float getRoomArea(@PathVariable String id, @PathVariable String floorId, @PathVariable String roomId) {
         Building building = buildingInfo.findBuilding(id);
         Floor floor = buildingInfo.findFloor(building, floorId);
-        Room room =  buildingInfo.findRoom(floor, roomId);
+        Room room =  buildingInfo.findRoom(id, floorId, roomId);
         return room.getArea();
     }
     @GetMapping("/{id}/floor/{floorId}/room/{roomId}/cube")
     public float getRoomCube(@PathVariable String id, @PathVariable String floorId, @PathVariable String roomId) {
         Building building = buildingInfo.findBuilding(id);
         Floor floor = buildingInfo.findFloor(building, floorId);
-        Room room =  buildingInfo.findRoom(floor, roomId);
+        Room room =  buildingInfo.findRoom(id, floorId, roomId);
         return room.getCube();
     }
     @GetMapping("/{id}/floor/{floorId}/room/{roomId}/heating")
     public float getRoomHeating(@PathVariable String id, @PathVariable String floorId, @PathVariable String roomId) {
         Building building = buildingInfo.findBuilding(id);
         Floor floor = buildingInfo.findFloor(building, floorId);
-        Room room =  buildingInfo.findRoom(floor, roomId);
+        Room room =  buildingInfo.findRoom(id, floorId, roomId);
         return room.getHeating();
     }
     @GetMapping("/{id}/floor/{floorId}/room/{roomId}/light")
     public float getRoomLight(@PathVariable String id, @PathVariable String floorId, @PathVariable String roomId) {
         Building building = buildingInfo.findBuilding(id);
         Floor floor = buildingInfo.findFloor(building, floorId);
-        Room room =  buildingInfo.findRoom(floor, roomId);
+        Room room =  buildingInfo.findRoom(id, floorId, roomId);
         return room.getLight();
     }
 
@@ -82,7 +82,7 @@ public class RoomController {
     public float getRoomLightPerArea(@PathVariable String id, @PathVariable String floorId, @PathVariable String roomId) {
         Building building = buildingInfo.findBuilding(id);
         Floor floor = buildingInfo.findFloor(building, floorId);
-        Room room = buildingInfo.findRoom(floor, roomId);
+        Room room = buildingInfo.findRoom(id, floorId, roomId);
         return room.calLight();
     }
 
@@ -90,8 +90,13 @@ public class RoomController {
     public float getRoomHeatingPerCube(@PathVariable String id, @PathVariable String floorId, @PathVariable String roomId) {
         Building building = buildingInfo.findBuilding(id);
         Floor floor = buildingInfo.findFloor(building, floorId);
-        Room room = buildingInfo.findRoom(floor, roomId);
+        Room room = buildingInfo.findRoom(id, floorId, roomId);
         return room.calHeating();
+    }
+
+    @PutMapping("{bid}/floor/{fid}/room/{rid}/update")
+    public Room updateRoom(@PathVariable String bid, @PathVariable String fid, @PathVariable String rid, @RequestBody Room updatedRoom){
+        return buildingInfo.updateRoom(bid, fid, updatedRoom, rid);
     }
 
 }

@@ -89,5 +89,10 @@ public class FloorController {
         return floor.calHeating();
     }
 
+    @PutMapping("{bid}/floor/{fid}/update")
+    public Floor updateFloor(@PathVariable String bid, @PathVariable String fid, @RequestBody Floor updatedFloor){
+        return buildingInfo.updateFloor(bid, updatedFloor, fid);
+    }
+
 
 }

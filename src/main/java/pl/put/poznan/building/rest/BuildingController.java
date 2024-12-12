@@ -82,50 +82,9 @@ public class BuildingController {
         return building.calHeating();
     }
 
-
-
     //PUT requesty - dodają możliwość update'owania danych budynku/poziomu/pokoju
-    //TODO - zmienic uwzgledniajac przeniesienie buildingStorage do klasy buildingInfo!
-//    @PutMapping("{id}")
-//    public Building updateBuilding(@PathVariable String id, @RequestBody Building updatedBuilding){
-//        logger.info("Request to update building: {}", id);
-//        //Find the building:
-//        for (int i=0; i<buildingInfo.buildingStorage.size(); i++){
-//            Building building = buildingInfo.buildingStorage.get(i);
-//            if(building.getId().equals(id)){
-//                buildingInfo.buildingStorage.set(i, updatedBuilding);
-//                logger.info("Building {} updated.", id);
-//                return updatedBuilding;
-//            }
-//
-//        }
-//        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found.");
-//    }
-//
-//    //Updatowanie poziomu - done
-//    @PutMapping("{bid}/floor/{fid}")
-//    public Floor updateFloor(@PathVariable String bid, @PathVariable String fid, @RequestBody Floor updatedFloor){
-//        logger.info("Request to update floor {} of building {}", fid, bid);
-//        //Find the building:
-//        for(int i=0; i<buildingInfo.buildingStorage.size(); i++){
-//            Building building = buildingInfo.buildingStorage.get(i);
-//            for(int j=0; j<building.getFloors().size(); j++){
-//                Floor floor = building.getFloors().get(j);
-//                if(floor.getId().equals(fid)){
-//                    //Change the floor to the updatedFloor
-//                    building.removeFloor(floor);
-//                    building.addFloor(updatedFloor);
-//                    logger.info("Floor {} updated in building {}", fid, bid);
-//                    return updatedFloor;
-//                }
-//            }
-//        }
-//        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building or Floor not found");
-//    }
-
-    //Updatowanie pokoju - to be continued
-
-
-
-
+    @PutMapping("{id}/update")
+    public Building updateBuilding(@PathVariable String id, @RequestBody Building updatedBuilding){
+        return buildingInfo.updateBuilding(updatedBuilding, id);
+    }
 }

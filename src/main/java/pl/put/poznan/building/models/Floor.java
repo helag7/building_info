@@ -21,6 +21,7 @@ public class Floor extends Localization {
     public void addRoom(Room room) {
         rooms.add(room);
     }
+    public void removeRoom(Room room){rooms.remove(room);} //Do modyfikacji pokoju z poziomu PUT requesta
 
     @Override
     public float getArea() {
