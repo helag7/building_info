@@ -40,23 +40,8 @@ public class BuildingController {
         return building;
     }
 
-
-
-
-    @PostMapping("{bid}/floor/{fid}/addRoom")
-    public Room addRoom(@PathVariable String bid, @PathVariable String fid, @RequestBody Room room){
-        logger.info("Received request to add building to building {} floor {}.", bid, fid);
-        Building building = buildingInfo.findBuilding(bid);
-        Floor floor = buildingInfo.findFloor(building, fid);
-        floor.addRoom(room);
-        logger.info("Room added successfully: {}", room);
-        return room;
-    }
-
-
     //GET requesty - do pobrania danych danego budynku/poziomu/pokoju
 
-    //GET requesty dla danych całego budynku
     @GetMapping("/{id}")
     public Building getBuilding(@PathVariable String id) {
         return buildingInfo.findBuilding(id);
@@ -98,63 +83,6 @@ public class BuildingController {
     }
 
 
-    @GetMapping("/{id}/floor/{floorId}/rooms")
-    public List<Room> getFloorRooms(@PathVariable String id, @PathVariable String floorId) {
-        Building building = buildingInfo.findBuilding(id);
-        Floor floor = buildingInfo.findFloor(building, floorId);
-        return floor.getRooms();
-    }
-    //GET requests for room with specified id:
-    @GetMapping("/{id}/floor/{floorId}/room/{roomId}")
-    public Room getRoom(@PathVariable String id, @PathVariable String floorId, @PathVariable String roomId) {
-        Building building = buildingInfo.findBuilding(id);
-        Floor floor = buildingInfo.findFloor(building, floorId);
-        return buildingInfo.findRoom(floor, roomId);
-    }
-    @GetMapping("/{id}/floor/{floorId}/room/{roomId}/area")
-    public float getRoomArea(@PathVariable String id, @PathVariable String floorId, @PathVariable String roomId) {
-        Building building = buildingInfo.findBuilding(id);
-        Floor floor = buildingInfo.findFloor(building, floorId);
-        Room room =  buildingInfo.findRoom(floor, roomId);
-        return room.getArea();
-    }
-    @GetMapping("/{id}/floor/{floorId}/room/{roomId}/cube")
-    public float getRoomCube(@PathVariable String id, @PathVariable String floorId, @PathVariable String roomId) {
-        Building building = buildingInfo.findBuilding(id);
-        Floor floor = buildingInfo.findFloor(building, floorId);
-        Room room =  buildingInfo.findRoom(floor, roomId);
-        return room.getCube();
-    }
-    @GetMapping("/{id}/floor/{floorId}/room/{roomId}/heating")
-    public float getRoomHeating(@PathVariable String id, @PathVariable String floorId, @PathVariable String roomId) {
-        Building building = buildingInfo.findBuilding(id);
-        Floor floor = buildingInfo.findFloor(building, floorId);
-        Room room =  buildingInfo.findRoom(floor, roomId);
-        return room.getHeating();
-    }
-    @GetMapping("/{id}/floor/{floorId}/room/{roomId}/light")
-    public float getRoomLight(@PathVariable String id, @PathVariable String floorId, @PathVariable String roomId) {
-        Building building = buildingInfo.findBuilding(id);
-        Floor floor = buildingInfo.findFloor(building, floorId);
-        Room room =  buildingInfo.findRoom(floor, roomId);
-        return room.getLight();
-    }
-
-    @GetMapping("/{id}/floor/{floorId}/room/{roomId}/light-per-area")
-    public float getRoomLightPerArea(@PathVariable String id, @PathVariable String floorId, @PathVariable String roomId) {
-        Building building = buildingInfo.findBuilding(id);
-        Floor floor = buildingInfo.findFloor(building, floorId);
-        Room room = buildingInfo.findRoom(floor, roomId);
-        return room.calLight();
-    }
-
-    @GetMapping("/{id}/floor/{floorId}/room/{roomId}/heating-per-cube")
-    public float getRoomHeatingPerCube(@PathVariable String id, @PathVariable String floorId, @PathVariable String roomId) {
-        Building building = buildingInfo.findBuilding(id);
-        Floor floor = buildingInfo.findFloor(building, floorId);
-        Room room = buildingInfo.findRoom(floor, roomId);
-        return room.calHeating();
-    }
 
     //PUT requesty - dodają możliwość update'owania danych budynku/poziomu/pokoju
     //TODO - zmienic uwzgledniajac przeniesienie buildingStorage do klasy buildingInfo!
