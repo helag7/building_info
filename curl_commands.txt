@@ -1,0 +1,27 @@
+Plik zawiera przykładowe komendy curl do wysyłania danych na serwer w formacie JSON:
+
+Pusty budynek (id=1)
+curl -X POST "http://localhost:8080/buildings" -H "Content-Type: application/json" -d "{\"id\": \"1\", \"name\": \"Building 1\", \"floors\": []}"
+
+Budynek (id=2)
+curl -X POST "http://localhost:8080/buildings/addBuilding" -H "Content-Type: application/json" -d "{\"id\": \"2\", \"name\": \"Building 2\", \"floors\": [{\"id\": \"1\", \"name\": \"Floor 1\", \"rooms\": [{\"id\": \"1\", \"name\": \"Room 1\", \"area\": 20.5}, {\"id\": \"2\", \"name\": \"Room 2\", \"area\": 15.75}]}]}"
+
+Budynek  (id=3)
+curl -X POST "http://localhost:8080/buildings/addBuilding" -H "Content-Type: application/json" -d "{\"id\": \"3\", \"name\": \"Building 3\", \"floors\": [{\"id\": \"1\", \"name\": \"Floor 1\", \"rooms\": [{\"id\": \"1\", \"name\": \"Room 1\", \"area\": 25.0, \"cube\": 50.0, \"heating\": 200.0, \"light\": 300.0}, {\"id\": \"2\", \"name\": \"Room 2\", \"area\": 18.5, \"cube\": 40.0, \"heating\": 180.0, \"light\": 250.0}]}]}"
+
+Dodaje pokój do budynku 2 piętra 1:
+curl -X POST "http://localhost:8080/buildings/2/floor/1/addRoom" -H "Content-Type: application/json" -d "{\"id\": \"3\", \"name\": \"Room 3\", \"area\": 30.0, \"cube\": 60.0, \"heating\": 250.0, \"light\": 400.0}"
+
+
+PUT requesty:
+
+
+Zmienia budynek o id=2
+curl -X PUT "http://localhost:8080/buildings/2/update" -H "Content-Type: application/json" -d "{\"id\": \"2\", \"name\": \"Updated Building Name\", \"floors\": [{\"id\": \"1\", \"name\": \"Floor 1\", \"rooms\": [{\"id\": \"1\", \"name\": \"Room 1\", \"area\": 25.0, \"cube\": 50.0, \"heating\": 200.0, \"light\": 300.0}]}, {\"id\": \"2\", \"name\": \"Floor 2\", \"rooms\": [{\"id\": \"2\", \"name\": \"Room 2\", \"area\": 18.5, \"cube\": 40.0, \"heating\": 180.0, \"light\": 250.0}]}]}"
+
+Zmienia piętro o id=1 budynku o id=2:
+curl -X PUT "http://localhost:8080/buildings/2/floor/1" -H "Content-Type: application/json" -d "{\"id\": \"1\", \"name\": \"Floor B\", \"rooms\": [{\"id\": \"1\", \"name\": \"Room 1\", \"area\": 25.0, \"cube\": 50.0, \"heating\": 200.0, \"light\": 300.0}]}"`
+
+
+Zmienia pokój o id=3 piętra o id=1 budynku o id=2:
+curl -X PUT "http://localhost:8080/buildings/2/floor/1/room/3/update" -H "Content-Type: application/json" -d "{\"id\": \"3\", \"name\": \"Updated Room\", \"area\": 30.0, \"cube\": 60.0, \"heating\": 220.0, \"light\": 320.0}"
