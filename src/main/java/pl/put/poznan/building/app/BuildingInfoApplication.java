@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
-@SpringBootApplication(scanBasePackages = {"pl.put.poznan.building.rest"})
+@SpringBootApplication(scanBasePackages = {"pl.put.poznan.building.rest", "pl.put.poznan.building.app"})
 public class BuildingInfoApplication {
 
     public static void main(String[] args) {

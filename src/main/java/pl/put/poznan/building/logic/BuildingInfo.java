@@ -7,13 +7,17 @@ import pl.put.poznan.building.models.Building;
 import pl.put.poznan.building.models.Floor;
 import pl.put.poznan.building.models.Room;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //This file contains some logic that the BuildingController uses.
 public class BuildingInfo {
 
-    public Building findBuilding(List<Building> building_list, String id){
-        for(Building building: building_list){
+    //Storage for buildings: (z tego co pamiętam to mówił, że nie trzeba bazy danych, więc to powinno wystarczyć xD)
+    private final List<Building> buildingStorage = new ArrayList<>();
+
+    public Building findBuilding(String id){
+        for(Building building: buildingStorage){
             if(building.getId().equals(id)){
                 return building;
             }
@@ -39,5 +43,9 @@ public class BuildingInfo {
         }
         //Exception if room was not found:
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Room not found");
+    }
+
+    public void addBuilding(Building building){
+        buildingStorage.add(building);
     }
 }
