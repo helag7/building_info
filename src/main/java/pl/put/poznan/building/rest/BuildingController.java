@@ -98,49 +98,6 @@ public class BuildingController {
     }
 
 
-
-    //GET requesty dla konkretnego piętra:
-
-    @GetMapping("/{id}/floor/{floorId}/area")
-    public float getFloorArea(@PathVariable String id, @PathVariable String floorId){
-        Building building = buildingInfo.findBuilding(id);
-        Floor floor = buildingInfo.findFloor(building, floorId);
-        return floor.getArea();
-    }
-
-    @GetMapping("/{id}/floor/{floorId}/cube")
-    public float getFloorCube(@PathVariable String id, @PathVariable String floorId){
-        Building building = buildingInfo.findBuilding(id);
-        Floor floor = buildingInfo.findFloor(building, floorId);
-        return floor.getCube();
-    }
-    @GetMapping("/{id}/floor/{floorId}/heating")
-    public float getFloorHeating(@PathVariable String id, @PathVariable String floorId){
-        Building building = buildingInfo.findBuilding(id);
-        Floor floor = buildingInfo.findFloor(building, floorId);
-        return floor.getHeating();
-    }
-    @GetMapping("/{id}/floor/{floorId}/light")
-    public float getFloorLight(@PathVariable String id, @PathVariable String floorId){
-        Building building = buildingInfo.findBuilding(id);
-        Floor floor = buildingInfo.findFloor(building, floorId);
-        return floor.getLight();
-    }
-
-    @GetMapping("/{id}/floor/{floorId}/light-per-area")
-    public float getFloorLightPerArea(@PathVariable String id, @PathVariable String floorId) {
-        Building building = buildingInfo.findBuilding(id);
-        Floor floor = buildingInfo.findFloor(building, floorId);
-        return floor.calLight();
-    }
-
-    @GetMapping("/{id}/floor/{floorId}/heating-per-cube")
-    public float getFloorHeatingPerCube(@PathVariable String id, @PathVariable String floorId) {
-        Building building = buildingInfo.findBuilding(id);
-        Floor floor = buildingInfo.findFloor(building, floorId);
-        return floor.calHeating();
-    }
-
     @GetMapping("/{id}/floor/{floorId}/rooms")
     public List<Room> getFloorRooms(@PathVariable String id, @PathVariable String floorId) {
         Building building = buildingInfo.findBuilding(id);
