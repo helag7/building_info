@@ -4,15 +4,15 @@ package pl.put.poznan.building.rest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import pl.put.poznan.building.models.Building;
 import pl.put.poznan.building.models.Floor;
 import pl.put.poznan.building.logic.BuildingInfo;
 
 import java.util.List;
 
+
+//This class contains all REST methods to interact with floors
 @RestController
 @RequestMapping("/buildings")
 public class FloorController {
@@ -45,47 +45,40 @@ public class FloorController {
 
     @GetMapping("/{id}/floor/{floorId}")
     public Floor getFloor(@PathVariable String id, @PathVariable String floorId) {
-        Building building = buildingInfo.findBuilding(id);
-        return buildingInfo.findFloor(building, floorId);
+        return buildingInfo.findFloor(id, floorId);
     }
 
     @GetMapping("/{id}/floor/{floorId}/area")
     public float getFloorArea(@PathVariable String id, @PathVariable String floorId){
-        Building building = buildingInfo.findBuilding(id);
-        Floor floor = buildingInfo.findFloor(building, floorId);
+        Floor floor = buildingInfo.findFloor(id, floorId);
         return floor.getArea();
     }
 
     @GetMapping("/{id}/floor/{floorId}/cube")
     public float getFloorCube(@PathVariable String id, @PathVariable String floorId){
-        Building building = buildingInfo.findBuilding(id);
-        Floor floor = buildingInfo.findFloor(building, floorId);
+        Floor floor = buildingInfo.findFloor(id, floorId);
         return floor.getCube();
     }
     @GetMapping("/{id}/floor/{floorId}/heating")
     public float getFloorHeating(@PathVariable String id, @PathVariable String floorId){
-        Building building = buildingInfo.findBuilding(id);
-        Floor floor = buildingInfo.findFloor(building, floorId);
+        Floor floor = buildingInfo.findFloor(id, floorId);
         return floor.getHeating();
     }
     @GetMapping("/{id}/floor/{floorId}/light")
     public float getFloorLight(@PathVariable String id, @PathVariable String floorId){
-        Building building = buildingInfo.findBuilding(id);
-        Floor floor = buildingInfo.findFloor(building, floorId);
+        Floor floor = buildingInfo.findFloor(id, floorId);
         return floor.getLight();
     }
 
     @GetMapping("/{id}/floor/{floorId}/light-per-area")
     public float getFloorLightPerArea(@PathVariable String id, @PathVariable String floorId) {
-        Building building = buildingInfo.findBuilding(id);
-        Floor floor = buildingInfo.findFloor(building, floorId);
+        Floor floor = buildingInfo.findFloor(id, floorId);
         return floor.calLight();
     }
 
     @GetMapping("/{id}/floor/{floorId}/heating-per-cube")
     public float getFloorHeatingPerCube(@PathVariable String id, @PathVariable String floorId) {
-        Building building = buildingInfo.findBuilding(id);
-        Floor floor = buildingInfo.findFloor(building, floorId);
+        Floor floor = buildingInfo.findFloor(id, floorId);
         return floor.calHeating();
     }
 

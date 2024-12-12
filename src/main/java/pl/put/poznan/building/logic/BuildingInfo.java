@@ -10,7 +10,11 @@ import pl.put.poznan.building.models.Room;
 import java.util.ArrayList;
 import java.util.List;
 
-//This file contains some logic that the BuildingController uses.
+/*
+This class provides some functionality that controllers use, especially:
+find building/floor/room by id, update building/floor/room by id
+
+ */
 public class BuildingInfo {
 
     //Storage for buildings: (z tego co pamiętam to mówił, że nie trzeba bazy danych, więc to powinno wystarczyć xD)
@@ -26,9 +30,10 @@ public class BuildingInfo {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found");
     }
 
-    public Floor findFloor(Building building, String id){
+    public Floor findFloor(String bid, String fid){
+        Building building = findBuilding(bid);
         for(Floor floor: building.getFloors()){
-            if(floor.getId().equals(id)){
+            if(floor.getId().equals(fid)){
                 return floor;
             }
         }
@@ -36,8 +41,7 @@ public class BuildingInfo {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Floor not found");
     }
     public Room findRoom(String bid, String fid, String rid){
-        Building building = findBuilding(bid);
-        Floor floor = findFloor(building, fid);
+        Floor floor = findFloor(bid, fid);
         for(Room room: floor.getRooms()){
             if(room.getId().equals(rid)){
                 return room;
@@ -64,15 +68,14 @@ public class BuildingInfo {
 
     public Floor updateFloor(String bid, Floor updatedFloor, String fid){
         Building building = findBuilding(bid);
-        Floor floor = findFloor(building, fid);
+        Floor floor = findFloor(bid, fid);
         building.removeFloor(floor);
         building.addFloor(updatedFloor);
         return updatedFloor;
     }
 
     public Room updateRoom(String bid, String fid, Room updatedRoom, String rid){
-        Building building = findBuilding(bid);
-        Floor floor = findFloor(building, fid);
+        Floor floor = findFloor(bid, fid);
         Room room = findRoom(bid, fid, rid);
         floor.removeRoom(room);
         floor.addRoom(updatedRoom);
