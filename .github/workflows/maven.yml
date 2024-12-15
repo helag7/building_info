@@ -33,6 +33,6 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: built-jar
-        path: staging/*
+        path: target/**/*.jar
         retention-days: 30
 
