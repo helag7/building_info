@@ -34,3 +34,17 @@ jobs:
       with:
         name: built-jar
         path: target/*.jar
+    - name: Commit and push generated .jar to repo
+      run: |
+        # Create release folder if it doesn't exist
+        mkdir -p release
+        # Copy the generated .jar file to the release folder
+        cp target/*.jar release/
+        # Configure Git user for the action
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        # Add and commit the .jar file
+        git add release/*.jar
+        git commit -m "Add generated .jar"
+        # Push the changes to the main branch
+        git push
