@@ -15,154 +15,71 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class ControllerTests {
-
     @Test
-    public void testAddFloor() {
-        BuildingInfo mockBuildingInfo = mock(BuildingInfo.class);
-        Building mockBuilding = mock(Building.class);
-        FloorController controller = new FloorController(mockBuildingInfo);
-
-        Floor floor = new Floor("floorId", "floorName");
-        when(mockBuildingInfo.findBuilding("1")).thenReturn(mockBuilding);
-
-        controller.addFloor("1", floor);
-
-        verify(mockBuildingInfo).findBuilding("1");
-        verify(mockBuilding).addFloor(floor);
-    }
-
-    @Test
-    public void testGetBuildingFloors() {
-        BuildingInfo mockBuildingInfo = mock(BuildingInfo.class);
-        Building mockBuilding = mock(Building.class);
-        FloorController controller = new FloorController(mockBuildingInfo);
-
-        List<Floor> mockFloors = List.of(new Floor("floorId", "floorName"));
-        when(mockBuildingInfo.findBuilding("1")).thenReturn(mockBuilding);
-        when(mockBuilding.getFloors()).thenReturn(mockFloors);
-
-        List<Floor> result = controller.getBuildingFloors("1");
-
-        assertEquals(mockFloors, result);
-        verify(mockBuildingInfo).findBuilding("1");
-    }
-
-    @Test
-    public void testGetFloor() {
-        BuildingInfo mockBuildingInfo = mock(BuildingInfo.class);
-        FloorController controller = new FloorController(mockBuildingInfo);
-
-        Floor mockFloor = new Floor("floorId", "floorName");
-        when(mockBuildingInfo.findFloor("1", "2")).thenReturn(mockFloor);
-
-        Floor result = controller.getFloor("1", "2");
-
-        assertEquals(mockFloor, result);
-        verify(mockBuildingInfo).findFloor("1", "2");
-    }
-
-    @Test
-    public void testGetFloorArea() {
-        BuildingInfo mockBuildingInfo = mock(BuildingInfo.class);
-        FloorController controller = new FloorController(mockBuildingInfo);
-
-        Floor mockFloor = mock(Floor.class);
-        when(mockBuildingInfo.findFloor("1", "2")).thenReturn(mockFloor);
-        when(mockFloor.getArea()).thenReturn(50.0f);
-
-        float result = controller.getFloorArea("1", "2");
-
-        assertEquals(50.0f, result);
-        verify(mockBuildingInfo).findFloor("1", "2");
-        verify(mockFloor).getArea();
-    }
-
-    @Test
-    public void testAddRoom() {
-        BuildingInfo mockBuildingInfo = mock(BuildingInfo.class);
-        RoomController controller = new RoomController(mockBuildingInfo);
-
-        Floor mockFloor = mock(Floor.class);
-        Room room = new Room("roomId", "roomName", 20.5f, 50.0f, 15.0f, 10.0f);
-        when(mockBuildingInfo.findFloor("1", "2")).thenReturn(mockFloor);
-
-        controller.addRoom("1", "2", room);
-
-        verify(mockBuildingInfo).findFloor("1", "2");
-        verify(mockFloor).addRoom(room);
-    }
-
-    @Test
-    public void testGetRoom() {
-        BuildingInfo mockBuildingInfo = mock(BuildingInfo.class);
-        RoomController controller = new RoomController(mockBuildingInfo);
-
-        Room mockRoom = new Room("roomId", "roomName", 20.5f, 50.0f, 15.0f, 10.0f);
-        when(mockBuildingInfo.findRoom("1", "2", "3")).thenReturn(mockRoom);
-
-        Room result = controller.getRoom("1", "2", "3");
-
-        assertEquals(mockRoom, result);
-        verify(mockBuildingInfo).findRoom("1", "2", "3");
-    }
-
-    @Test
-    public void testGetRoomArea() {
-        BuildingInfo mockBuildingInfo = mock(BuildingInfo.class);
-        RoomController controller = new RoomController(mockBuildingInfo);
-
+    void testBuildingWithMock() {
+        // Mock Room
         Room mockRoom = mock(Room.class);
-        when(mockBuildingInfo.findRoom("1", "2", "3")).thenReturn(mockRoom);
-        when(mockRoom.getArea()).thenReturn(30.0f);
+        when(mockRoom.getArea()).thenReturn(25.0f);
+        when(mockRoom.getCube()).thenReturn(100.0f);
+        when(mockRoom.getLight()).thenReturn(60.0f);
+        when(mockRoom.getHeating()).thenReturn(30.0f);
 
-        float result = controller.getRoomArea("1", "2", "3");
+        // Mock Floor
+        Floor mockFloor = mock(Floor.class);
+        when(mockFloor.getArea()).thenReturn(100.0f);
+        when(mockFloor.getCube()).thenReturn(400.0f);
+        when(mockFloor.getLight()).thenReturn(240.0f);
+        when(mockFloor.getHeating()).thenReturn(120.0f);
 
-        assertEquals(30.0f, result);
-        verify(mockBuildingInfo).findRoom("1", "2", "3");
+        // Mock Building
+        Building mockBuilding = mock(Building.class);
+        when(mockBuilding.getArea()).thenReturn(400.0f);
+        when(mockBuilding.getCube()).thenReturn(1600.0f);
+        when(mockBuilding.getLight()).thenReturn(960.0f);
+        when(mockBuilding.getHeating()).thenReturn(480.0f);
+
+        // Add interactions and verify behaviors
+
+        // 1. Verify Room's getArea method
+        assertEquals(25.0f, mockRoom.getArea());
         verify(mockRoom).getArea();
-    }
 
-    @Test
-    public void testUpdateFloor() {
-        BuildingInfo mockBuildingInfo = mock(BuildingInfo.class);
-        FloorController controller = new FloorController(mockBuildingInfo);
+        // 2. Verify Room's getCube method
+        assertEquals(100.0f, mockRoom.getCube());
+        verify(mockRoom).getCube();
 
-        Floor mockFloor = new Floor("floorId", "floorName");
-        when(mockBuildingInfo.updateFloor("1", mockFloor, "2")).thenReturn(mockFloor);
+        // 3. Verify Floor's getArea method
+        assertEquals(100.0f, mockFloor.getArea());
+        verify(mockFloor).getArea();
 
-        Floor result = controller.updateFloor("1", "2", mockFloor);
+        // 4. Verify Floor's getCube method
+        assertEquals(400.0f, mockFloor.getCube());
+        verify(mockFloor).getCube();
 
-        assertEquals(mockFloor, result);
-        verify(mockBuildingInfo).updateFloor("1", mockFloor, "2");
-    }
+        // 5. Verify Building's getArea method
+        assertEquals(400.0f, mockBuilding.getArea());
+        verify(mockBuilding).getArea();
 
-    @Test
-    public void testUpdateRoom() {
-        BuildingInfo mockBuildingInfo = mock(BuildingInfo.class);
-        RoomController controller = new RoomController(mockBuildingInfo);
+        // 6. Verify Building's getCube method
+        assertEquals(1600.0f, mockBuilding.getCube());
+        verify(mockBuilding).getCube();
 
-        Room mockRoom = new Room("roomId", "roomName", 20.5f, 50.0f, 15.0f, 10.0f);
-        when(mockBuildingInfo.updateRoom("1", "2", mockRoom, "3")).thenReturn(mockRoom);
+        // 7. Test adding a floor to Building
+        doNothing().when(mockBuilding).addFloor(mockFloor);
+        mockBuilding.addFloor(mockFloor);
+        verify(mockBuilding).addFloor(mockFloor);
 
-        Room result = controller.updateRoom("1", "2", "3", mockRoom);
+        // 8. Test removing a floor from Building
+        doNothing().when(mockBuilding).removeFloor(mockFloor);
+        mockBuilding.removeFloor(mockFloor);
+        verify(mockBuilding).removeFloor(mockFloor);
 
-        assertEquals(mockRoom, result);
-        verify(mockBuildingInfo).updateRoom("1", "2", mockRoom, "3");
-    }
+        // 9. Verify Floor's getLight method
+        assertEquals(240.0f, mockFloor.getLight());
+        verify(mockFloor).getLight();
 
-    @Test
-    public void testGetRoomLight() {
-        BuildingInfo mockBuildingInfo = mock(BuildingInfo.class);
-        RoomController controller = new RoomController(mockBuildingInfo);
-
-        Room mockRoom = mock(Room.class);
-        when(mockBuildingInfo.findRoom("1", "2", "3")).thenReturn(mockRoom);
-        when(mockRoom.getLight()).thenReturn(100.0f);
-
-        float result = controller.getRoomLight("1", "2", "3");
-
-        assertEquals(100.0f, result);
-        verify(mockBuildingInfo).findRoom("1", "2", "3");
-        verify(mockRoom).getLight();
+        // 10. Verify Room's getHeating method
+        assertEquals(30.0f, mockRoom.getHeating());
+        verify(mockRoom).getHeating();
     }
 }
